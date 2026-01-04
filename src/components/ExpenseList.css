@@ -1,0 +1,36 @@
+.expense-list-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.expense-list-container h2 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+}
+
+.expense-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.loading,
+.no-expenses {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.no-expenses p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.no-expenses p:last-child {
+  color: #999;
+  font-size: 1rem;
+}
