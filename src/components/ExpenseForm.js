@@ -2,33 +2,44 @@ import React, { useState } from "react";
 import "./ExpenseForm.css";
 
 const ExpenseForm = ({ onSubmit, loading }) => {
-  const [form, setForm] = useState({
-    amount: "",
-    category: "FOOD",
-    description: "",
-    date: "",
-  });
+  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState("FOOD");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
 
-  const submit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.amount || !form.date) return alert("Amount & date required");
-    onSubmit(form);
-    setForm({ amount: "", category: "FOOD", description: "", date: "" });
+
+    if (!amount || !date) {
+      alert("Amount and date are required");
+      return;
+    }
+
+    onSubmit({
+      amount: Number(amount),        // ✅ number
+      category,                       // ✅ enum-safe
+      description: description || "", // ✅ never null
+      date                            // ✅ YYYY-MM-DD
+    });
+
+    setAmount("");
+    setCategory("FOOD");
+    setDescription("");
+    setDate("");
   };
 
   return (
-    <form className="expense-form" onSubmit={submit}>
+    <form className="expense-form" onSubmit={handleSubmit}>
       <input
         type="number"
+        step="0.01"
         placeholder="Amount"
-        value={form.amount}
-        onChange={(e) => setForm({ ...form, amount: e.target.value })}
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        required
       />
 
-      <select
-        value={form.category}
-        onChange={(e) => setForm({ ...form, category: e.target.value })}
-      >
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="FOOD">Food</option>
         <option value="TRANSPORT">Transport</option>
         <option value="RENT">Rent</option>
@@ -36,18 +47,20 @@ const ExpenseForm = ({ onSubmit, loading }) => {
       </select>
 
       <input
-        type="date"
-        value={form.date}
-        onChange={(e) => setForm({ ...form, date: e.target.value })}
+        type="date"          // 🔥 DO NOT CHANGE THIS
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
       />
 
       <input
+        type="text"
         placeholder="Description"
-        value={form.description}
-        onChange={(e) => setForm({ ...form, description: e.target.value })}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
 
-      <button disabled={loading}>
+      <button type="submit" disabled={loading}>
         {loading ? "Saving..." : "Add Expense"}
       </button>
     </form>
