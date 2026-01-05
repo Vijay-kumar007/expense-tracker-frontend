@@ -1,25 +1,25 @@
-import React from 'react';
-import './ExpenseItem.css';
+import React from "react";
+import "./ExpenseItem.css";
 
 const ExpenseItem = ({ expense, onDelete }) => {
-  const amount = Number(expense.amount || 0).toFixed(2);
-  const description = expense.description || 'No description';
+  if (!expense) return null;
+
+  const amount = Number(expense.amount || 0);
   const date = expense.date
     ? new Date(expense.date).toLocaleDateString()
-    : 'No date';
-  const category = expense.category || 'OTHER';
+    : "No date";
 
   return (
     <div className="expense-item">
       <div>
-        <strong>{description}</strong>
-        <div>{category}</div>
+        <strong>{expense.description || "No description"}</strong>
+        <div>{expense.category || "OTHER"}</div>
         <small>{date}</small>
       </div>
 
-      <div>
-        <strong>${amount}</strong>
-        <button onClick={() => onDelete(expense.id)}>🗑️</button>
+      <div className="right">
+        <span>${amount.toFixed(2)}</span>
+        <button onClick={() => onDelete(expense.id)}>🗑</button>
       </div>
     </div>
   );
