@@ -7,7 +7,7 @@ const ExpenseItem = ({ expense, onEdit, onDelete }) => {
       FOOD: '🍔',
       TRANSPORT: '🚗',
       RENT: '🏠',
-      OTHER: '📦'
+      OTHER: '📦',
     };
     return icons[category] || '📦';
   };
@@ -17,42 +17,51 @@ const ExpenseItem = ({ expense, onEdit, onDelete }) => {
       FOOD: '#4CAF50',
       TRANSPORT: '#2196F3',
       RENT: '#FF9800',
-      OTHER: '#9C27B0'
+      OTHER: '#9C27B0',
     };
     return colors[category] || '#9C27B0';
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'No date';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
+
+  const safeAmount = Number(expense?.amount ?? 0).toFixed(2);
 
   return (
     <div className="expense-item">
       <div className="expense-info">
         <div
           className="expense-category"
-          style={{ color: getCategoryColor(expense.category) }}
+          style={{ color: getCategoryColor(expense?.category) }}
         >
           <span className="category-icon">
-            {getCategoryIcon(expense.category)}
+            {getCategoryIcon(expense?.category)}
           </span>
-          <span className="category-name">{expense.category}</span>
+          <span className="category-name">
+            {expense?.category || 'OTHER'}
+          </span>
         </div>
 
         <div className="expense-details">
-          <p className="expense-description">{expense.description}</p>
-          <p className="expense-date">📅 {formatDate(expense.date)}</p>
+          <p className="expense-description">
+            {expense?.description || 'No description'}
+          </p>
+          <p className="expense-date">
+            📅 {formatDate(expense?.date)}
+          </p>
         </div>
       </div>
 
       <div className="expense-actions">
         <div className="expense-amount">
-          ${expense.amount.toFixed(2)}
+          ${safeAmount}
         </div>
 
         <div className="action-buttons">
@@ -65,7 +74,7 @@ const ExpenseItem = ({ expense, onEdit, onDelete }) => {
           </button>
 
           <button
-            onClick={() => onDelete(expense.id)}
+            onClick={() => onDelete(expense?.id)}
             className="delete-btn"
             title="Delete"
           >
